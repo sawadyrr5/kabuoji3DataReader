@@ -17,12 +17,14 @@ class Kabuoji3DataReader(_DailyBaseReader):
 
     def read(self):
         symbols = []
-        years = [y.year for y in pd.date_range(self.start, self.end, freq='Y')]
+        years = set([y.year for y in pd.date_range(self.start, self.end, freq='D')])
 
         if isinstance(self.symbols, list):
             symbols = self.symbols
-        if isinstance(self.symbols, str):
-            symbols[0] = self.symbols
+        elif isinstance(self.symbols, str) or isinstance(self.symbols, int):
+            symbols.append(self.symbols)
+        else:
+            symbols = []
 
         dfs = []
 
